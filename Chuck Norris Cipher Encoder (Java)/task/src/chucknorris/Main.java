@@ -14,9 +14,16 @@ public class Main {
         String word = sc.nextLine();
         char[] words = word.toCharArray();
 
-        //print out all characters
-        for (char c: words){
-            System.out.print(c + " ");
+        System.out.println();
+        //convert to binary
+        processToBinary(words);
+    }
+
+    private static void processToBinary(char[] chars){
+        System.out.println("The result:");
+        for (char aChar : chars) {
+            String binary = String.format("%7s", Integer.toBinaryString(aChar)).replace(' ', '0');
+            System.out.println(aChar + " = " + binary);
         }
     }
 }
