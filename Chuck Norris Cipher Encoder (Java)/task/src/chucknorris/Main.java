@@ -9,21 +9,50 @@ public class Main {
     }
 
     public static void processInput(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Input string:");
-        String word = sc.nextLine();
-        char[] words = word.toCharArray();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Input string: ");
+        String input = scanner.nextLine(); // Read input
 
-        System.out.println();
-        //convert to binary
-        processToBinary(words);
+        // Convert string to 7-bit binary representation
+        StringBuilder binaryBuilder = new StringBuilder();
+        for (char ch : input.toCharArray()) {
+            binaryBuilder.append(String.format("%7s", Integer.toBinaryString(ch)).replace(' ', '0'));
+        }
+
+        String binary = binaryBuilder.toString();
+
+        // Apply Chuck Norris encoding
+        StringBuilder encoded = new StringBuilder();
+
+        char currentBit = binary.charAt(0);
+        int count = 1;
+
+        for (int i = 1; i < binary.length(); i++) {
+            if (binary.charAt(i) == currentBit) {
+                count++;
+            } else {
+                appendUnaryBlock(encoded, currentBit, count);
+                currentBit = binary.charAt(i);
+                count = 1;
+            }
+        }
+
+        // Append the final block
+        appendUnaryBlock(encoded, currentBit, count);
+
+        // Print the result
+        System.out.println("The result: ");
+        System.out.println(encoded.toString().trim());
+
     }
 
-    private static void processToBinary(char[] chars){
-        System.out.println("The result:");
-        for (char aChar : chars) {
-            String binary = String.format("%7s", Integer.toBinaryString(aChar)).replace(' ', '0');
-            System.out.println(aChar + " = " + binary);
-        }
+
+
+
+
+    private static void appendUnaryBlock(StringBuilder sb, char bit, int count){
+        if (!sb.isEmpty()) sb.append(" ");
+        sb.append(bit == '1' ? "0 " : "00 ");
+        sb.append("0".repeat(count));
     }
 }
